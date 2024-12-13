@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-votingdapp = "coUnmi3oBUtwtd9fjeAvSsJssXh5A5xyPbhpewyzRVF"
+voting = "7BGTxKLF327koJ6f3eQcYHTZeHzgCSe8ocCfNbDPoVzA"
 
 [registry]
 url = "https://api.apr.dev"
