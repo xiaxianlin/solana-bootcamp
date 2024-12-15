@@ -1,4 +1,4 @@
-import { Program, BN } from '@coral-xyz/anchor'
+import { Program, BN, workspace, setProvider, AnchorProvider } from '@coral-xyz/anchor'
 import { PublicKey } from '@solana/web3.js'
 import { BankrunProvider, startAnchor } from 'anchor-bankrun'
 import { Voting } from '../target/types/voting'
@@ -10,12 +10,13 @@ const votingAddress = new PublicKey('7BGTxKLF327koJ6f3eQcYHTZeHzgCSe8ocCfNbDPoVz
 describe('Voting', () => {
     let context
     let provider
-    let votingProgram: Program<Voting>
+    setProvider(AnchorProvider.env())
+    let votingProgram: Program<Voting> = workspace.voting as Program<Voting>
 
     beforeAll(async () => {
-        context = await startAnchor('', [{ name: 'voting', programId: votingAddress }], [])
-        provider = new BankrunProvider(context)
-        votingProgram = new Program<Voting>(IDL, provider)
+        //     context = await startAnchor('', [{ name: 'voting', programId: votingAddress }], [])
+        //     provider = new BankrunProvider(context)
+        //     votingProgram = new Program<Voting>(IDL, provider)
     })
 
     it('initialize poll ', async () => {
@@ -52,5 +53,14 @@ describe('Voting', () => {
         const react = await votingProgram.account.candidate.fetch(reactAddress)
         console.log(react)
     })
-    it('vote', async () => {})
+    it('vote', async () => {
+        await votingProgram.methods.vote('Tiny', new BN(1)).rpc()
+        const [tinyAddress] = PublicKey.findProgramAddressSync(
+            [new BN(1).toArrayLike(Buffer, 'le', 8), Buffer.from('Tiny')],
+            votingAddress
+        )
+        const tiny = await votingProgram.account.candidate.fetch(tinyAddress)
+        console.log(tiny)
+        expect(tiny.candidateVotes.toNumber()).toEqual(1)
+    })
 })
