@@ -1,13 +1,5 @@
-import {
-    createNft,
-    mplTokenMetadata
-} from '@metaplex-foundation/mpl-token-metadata'
-import {
-    createGenericFile,
-    generateSigner,
-    keypairIdentity,
-    percentAmount
-} from '@metaplex-foundation/umi'
+import { createNft, mplTokenMetadata } from '@metaplex-foundation/mpl-token-metadata'
+import { createGenericFile, generateSigner, keypairIdentity, percentAmount } from '@metaplex-foundation/umi'
 import { createUmi } from '@metaplex-foundation/umi-bundle-defaults'
 import { irysUploader } from '@metaplex-foundation/umi-uploader-irys'
 import { getExplorerLink, getKeypairFromFile } from '@solana-developers/helpers'
@@ -55,11 +47,7 @@ await createNft(umi, {
     isCollection: true
 }).sendAndConfirm(umi, { send: { commitment: 'finalized' } })
 
-let explorerLink = getExplorerLink(
-    'address',
-    collectionMint.publicKey,
-    'devnet'
-)
+let explorerLink = getExplorerLink('address', collectionMint.publicKey, 'devnet')
 console.log(`Collection NFT:  ${explorerLink}`)
 console.log(`Collection NFT address is:`, collectionMint.publicKey)
 console.log('✅ Finished successfully!')
